@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مركز الشحن الرسمي | Garena</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#f5f5f5;color:#222;min-height:100vh;padding-bottom:30px}
+
+/* الهيدر */
+.top-bar{background:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #eee;position:sticky;top:0;z-index:100}
+.user-icon{font-size:1.4rem;color:#999;cursor:pointer}
+.country-selector{background:#f0f0f0;border-radius:20px;padding:6px 14px;font-size:.85rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px}
+.logo-section{display:flex;align-items:center;gap:8px}
+.logo-text{display:flex;flex-direction:column;line-height:1.1;text-align:left}
+.logo-text strong{color:#d32f2f;font-size:.9rem}
+.logo-text small{color:#666;font-size:.7rem}
+.garena-logo{font-size:1.6rem;color:#d32f2f}
+
+/* اختيار اللعبة */
+.game-selector{padding:15px 14px;background:#fff}
+.game-selector h2{font-size:1.05rem;font-weight:700;margin-bottom:12px}
+.games{display:flex;gap:35px;justify-content:center;padding:5px 0}
+.game-item{text-align:center;cursor:pointer;position:relative}
+.game-icon{width:70px;height:70px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:6px;border:3px solid transparent;transition:.3s;position:relative;overflow:hidden}
+.game-icon.dark{background:linear-gradient(135deg,#2c2c2c,#1a1a1a)}
+.game-icon.freefire{background:linear-gradient(135deg,#ff9800,#ff5722,#d32f2f)}
+.game-item.active .game-icon{border-color:#d32f2f}
+.game-item.active .game-icon::after{content:"✓";position:absolute;top:-2px;right:-2px;background:#d32f2f;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,.3)}
+.game-item p{font-size:.8rem;font-weight:500;color:#666}
+.game-item.active p{color:#d32f2f;font-weight:700}
+
+/* البانر */
+.banner{margin:12px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#f9a825,#ff9800,#ff6f00);position:relative;min-height:150px;display:flex;align-items:center;padding:18px;box-shadow:0 4px 15px rgba(255,152,0,.3)}
+.banner::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,.2),transparent 60%)}
+.banner-content{display:flex;justify-content:space-between;align-items:center;width:100%;position:relative;z-index:1}
+.banner-text h3{font-size:1.6rem;color:#fff;font-weight:900;margin-bottom:8px;text-shadow:2px 2px 8px rgba(0,0,0,.4)}
+.secure-badge{background:rgba(0,0,0,.55);color:#fff;padding:5px 12px;border-radius:20px;font-size:.75rem;font-weight:500;display:inline-block}
+.banner-characters{font-size:4.5rem;opacity:.95}
+
+/* الخطوات */
+.step{background:#fff;margin:12px;border-radius:12px;padding:15px}
+.step-header{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.step-number{background:#d32f2f;color:#fff;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.95rem}
+.step-header h2{font-size:1.15rem;font-weight:700}
+
+/* صندوق تسجيل الدخول */
+.login-box{background:#f9f9f9;border-radius:10px;padding:15px}
+.login-box label{display:block;font-weight:700;margin-bottom:10px;font-size:.9rem}
+.help{background:#ddd;color:#888;width:17px;height:17px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;cursor:help}
+.player-id-input{display:flex;margin-bottom:15px;border-radius:8px;overflow:hidden}
+.player-id-input input{flex:1;padding:12px 14px;border:1px solid #ddd;border-right:none;font-size:.9rem;outline:none;background:#fff;font-family:inherit}
+.player-id-input input:focus{border-color:#d32f2f}
+.btn-login{background:#d32f2f;color:#fff;border:none;padding:12px 18px;font-weight:700;cursor:pointer;font-size:.9rem;font-family:inherit;white-space:nowrap;transition:.2s}
+.btn-login:active{background:#b71c1c}
+.divider{text-align:center;color:#888;font-size:.8rem;margin:15px 0 12px}
+.social-icons{display:flex;justify-content:center;gap:12px}
+.social{width:40px;height:40px;border-radius:50%;border:1px solid #eee;background:#fff;cursor:pointer;font-size:.95rem;font-weight:bold;transition:.3s;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.social:active{transform:scale(.9)}
+.social.facebook{background:#1877f2;color:#fff;border:none}
+.social.google{color:#db4437;font-weight:900}
+.social.apple{background:#000;color:#fff;border:none}
+.social.vk{background:#0077ff;color:#fff;border:none;font-size:.75rem}
+.social.x{background:#000;color:#fff;border:none}
+
+/* التبويبات */
+.tabs{display:flex;gap:10px;margin-bottom:15px}
+.tab{padding:7px 22px;border-radius:20px;border:1px solid #ddd;background:#fff;cursor:pointer;font-family:inherit;font-weight:500;transition:.3s;font-size:.9rem;color:#666}
+.tab.active{background:#fff;color:#d32f2f;border-color:#d32f2f;font-weight:700}
+
+/* شبكة الجواهر */
+.diamond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.diamond-card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:18px 8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.95rem;font-weight:700;color:#333;transition:.2s}
+.diamond-card:active{transform:scale(.97)}
+.diamond-card.selected{background:linear-gradient(135deg,#d32f2f,#ff5722);color:#fff;border-color:#d32f2f;box-shadow:0 4px 15px rgba(211,47,47,.35)}
+.gem{font-size:.9rem}
+.diamond-card.wide{grid-column:3}
+
+/* النافذة المنبثقة */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:999;align-items:center;justify-content:center;padding:20px}
+.modal.active{display:flex}
+.modal-content{background:#fff;border-radius:15px;padding:22px;max-width:400px;width:100%;position:relative;animation:slideUp .3s;max-height:90vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.close-btn{position:absolute;top:12px;left:15px;font-size:1.8rem;cursor:pointer;color:#999;line-height:1;font-weight:300}
+.modal-content h3{text-align:center;margin-bottom:18px;color:#d32f2f;font-size:1.25rem;font-weight:700}
+.modal-content label{display:block;font-weight:700;margin-bottom:6px;font-size:.85rem;color:#333}
+.modal-content input{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:8px;margin-bottom:12px;font-family:inherit;font-size:.9rem;outline:none;transition:.3s;background:#fafafa}
+.modal-content input:focus{border-color:#d32f2f;background:#fff;box-shadow:0 0 0 3px rgba(211,47,47,.08)}
+.btn-submit{width:100%;padding:13px;background:#d32f2f;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:.3s;margin-top:5px}
+.btn-submit:active{background:#b71c1c}
+#message{text-align:center;margin-top:12px;font-weight:700;font-size:.9rem}
+
+/* العروض */
+.offers{padding:18px 12px}
+.offers h2{font-size:1.15rem;font-weight:700;margin-bottom:12px;padding-right:4px}
+.offers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.offer-card{border-radius:10px;overflow:hidden;aspect-ratio:2/1;cursor:pointer;transition:.2s}
+.offer-card:active{transform:scale(.97)}
+.offer-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+.offer-img.yellow{background:linear-gradient(135deg,#ffc107,#ff9800)}
+.offer-img.purple{background:linear-gradient(135deg,#9c27b0,#673ab7)}
+
+footer{text-align:center;padding:15px;color:#999;font-size:.8rem}
+
+@media (max-width:500px){
+.game-icon{width:65px;height:65px;font-size:1.8rem}
+.banner-text h3{font-size:1.4rem}
+.banner-characters{font-size:3.5rem}
+.diamond-card{padding:15px 5px;font-size:.85rem}
+}
+</style>
+</head>
+<body>
+
+<!-- الهيدر -->
+<header class="top-bar">
+    <div class="user-icon">👤</div>
+    <div class="country-selector">🇩🇿 الجزائر العربية ▼</div>
+    <div class="logo-section">
+        <div class="logo-text">
+            <strong>مركز الشحن</strong>
+            <small>الرسمي</small>
+        </div>
+        <div class="garena-logo">🎮</div>
+    </div>
+</header>
+
+<!-- اختيار اللعبة -->
+<section class="game-selector">
+    <h2>اختيار اللعبة</h2>
+    <div class="games">
+        <div class="game-item">
+            <div class="game-icon dark">🎯</div>
+            <p>Delta Force</p>
+        </div>
+        <div class="game-item active">
+            <div class="game-icon freefire">🔥</div>
+            <p>Free Fire</p>
+        </div>
+    </div>
+</section>
+
+<!-- بانر -->
+<section class="banner">
+    <div class="banner-content">
+        <div class="banner-characters">🔥</div>
+        <div class="banner-text">
+            <h3>Free Fire</h3>
+            <span class="secure-badge">🛡️ الدفع 100% الآمن</span>
+        </div>
+    </div>
+</section>
+
+<!-- الخطوة 1: تسجيل الدخول -->
+<section class="step">
+    <div class="step-header">
+        <span class="step-number">1</span>
+        <h2>تسجيل الدخول</h2>
+    </div>
+    <div class="login-box">
+        <label>معرّف اللاعب <span class="help">؟</span></label>
+        <div class="player-id-input">
+            <button type="button" class="btn-login" id="openLogin">تسجيل الدخول</button>
+            <input type="text" id="playerId" placeholder="يرجى إدخال معرف اللاعب هنا">
+        </div>
+        <p class="divider">أو سجل دخولك بحسابك الخاص بك</p>
+        <div class="social-icons">
+            <button class="social apple">🍎</button>
+            <button class="social vk">VK</button>
+            <button class="social x">𝕏</button>
+            <button class="social google">G</button>
+            <button class="social facebook">f</button>
+        </div>
+    </div>
+</section>
+
+<!-- الخطوة 2: كمية الشحن -->
+<section class="step">
+    <div class="step-header">
+        <span class="step-number">2</span>
+        <h2>كمية الشحن</h2>
+    </div>
+    <div class="tabs">
+        <button class="tab">استرداد</button>
+        <button class="tab active">شراء</button>
+    </div>
+    <div class="diamond-grid">
+        <button class="diamond-card" data-value="100"><span>100</span><span class="gem">💎</span></button>
+        <button class="diamond-card" data-value="210"><span>210</span><span class="gem">💎</span></button>
+        <button class="diamond-card" data-value="310"><span>310</span><span class="gem">💎</span></button>
+        <button class="diamond-card" data-value="520"><span>520</span><span class="gem">💎</span></button>
+        <button class="diamond-card" data-value="1060"><span>1,060</span><span class="gem">💎</span></button>
+        <button class="diamond-card" data-value="2180"><span>2,180</span><span class="gem">💎</span></button>
+        <button class="diamond-card wide" data-value="5600"><span>5,600</span><span class="gem">💎</span></button>
+    </div>
+</section>
+
+<!-- العروض الخاصة -->
+<section class="offers">
+    <h2>العروض الخاصة</h2>
+    <div class="offers-grid">
+        <div class="offer-card"><div class="offer-img yellow">🎁</div></div>
+        <div class="offer-card"><div class="offer-img purple">💜</div></div>
+    </div>
+</section>
+
+<footer><p>© 2026 - مركز الشحن الرسمي</p></footer>
+
+<!-- ===== نافذة تسجيل الدخول ===== -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeBtn">×</span>
+        <h3>🔐 تسجيل الدخول</h3>
+        <form id="loginForm">
+            <label>📧 البريد الإلكتروني</label>
+            <input type="email" id="email" placeholder="example@gmail.com" required>
+
+            <label>🔒 كلمة المرور</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+
+            <label>🏆 اللفل (المستوى)</label>
+            <input type="number" id="level" placeholder="مثال: 45" min="1" max="100" required>
+
+            <label>🆔 معرّف اللاعب (ID)</label>
+            <input type="text" id="finalId" placeholder="123456789" required>
+
+            <button type="submit" class="btn-submit">تسجيل الدخول</button>
+        </form>
+        <p id="message"></p>
+    </div>
+</div>
+
+<script>
+// اختيار الباقة
+var diamondCards = document.querySelectorAll('.diamond-card');
+var selectedPackage = null;
+
+for (var i = 0; i < diamondCards.length; i++) {
+    diamondCards[i].addEventListener('click', function() {
+        for (var j = 0; j < diamondCards.length; j++) {
+            diamondCards[j].classList.remove('selected');
+        }
+        this.classList.add('selected');
+        selectedPackage = this.getAttribute('data-value');
+    });
+}
+
+// فتح نافذة تسجيل الدخول
+document.getElementById('openLogin').addEventListener('click', function() {
+    var id = document.getElementById('playerId').value.trim();
+    if (id) document.getElementById('finalId').value = id;
+    document.getElementById('loginModal').classList.add('active');
+});
+
+// إغلاق النافذة
+document.getElementById('closeBtn').addEventListener('click', function() {
+    document.getElementById('loginModal').classList.remove('active');
+    document.getElementById('message').textContent = '';
+});
+
+// إغلاق عند الضغط خارج النافذة
+document.getElementById('loginModal').addEventListener('click', function(e) {
+    if (e.target.id === 'loginModal') {
+        this.classList.remove('active');
+        document.getElementById('message').textContent = '';
+    }
+});
+
+// إرسال الفورم
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+    var level = document.getElementById('level').value;
+    var finalId = document.getElementById('finalId').value.trim();
+    var message = document.getElementById('message');
+
+    // تحقق
+    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+        message.textContent = '⚠️ البريد الإلكتروني غير صحيح';
+        message.style.color = '#ff9800';
+        return;
+    }
+    if (password.length < 6) {
+        message.textContent = '⚠️ كلمة المرور 6 أحرف على الأقل';
+        message.style.color = '#ff9800';
+        return;
+    }
+    if (level < 1 || level > 100) {
+        message.textContent = '⚠️ اللفل بين 1 و 100';
+        message.style.color = '#ff9800';
+        return;
+    }
+    if (finalId.length < 5) {
+        message.textContent = '⚠️ معرّف اللاعب غير صحيح';
+        message.style.color = '#ff9800';
+        return;
+    }
+
+    // نجاح
+    message.textContent = '🎉 تم تسجيل الدخول بنجاح!';
+    message.style.color = '#4caf50';
+
+    var form = this;
+    setTimeout(function() {
+        form.reset();
+        document.getElementById('loginModal').classList.remove('active');
+        message.textContent = '';
+        if (selectedPackage) {
+            alert('🎉 مبروك! تم شحن ' + selectedPackage + ' جوهرة');
+        } else {
+            alert('✅ تم تسجيل الدخول بنجاح!');
+        }
+    }, 2000);
+});
+
+// تبويبات
+var tabs = document.querySelectorAll('.tab');
+for (var k = 0; k < tabs.length; k++) {
+    tabs[k].addEventListener('click', function() {
+        for (var m = 0; m < tabs.length; m++) {
+            tabs[m].classList.remove('active');
+        }
+        this.classList.add('active');
+    });
+}
+</script>
+
+</body>
+</html>
